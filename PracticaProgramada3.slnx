@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="PracticaProgramada3.Api/PracticaProgramada3.Api.csproj" Id="da8b6024-f209-4866-b803-6f16b9eb1aa9" />
+  <Project Path="PracticaProgramada3.Application/PracticaProgramada3.Application.csproj" />
+  <Project Path="PracticaProgramada3.Domain/PracticaProgramada3.Domain.csproj" />
+  <Project Path="PracticaProgramada3.Infrastructure/PracticaProgramada3.Infrastructure.csproj" />
+  <Project Path="PracticaProgramada3/PracticaProgramada3.csproj" />
+</Solution>

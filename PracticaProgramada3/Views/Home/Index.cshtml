@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Votar";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/votacion.css" asp-append-version="true" />
+}
+
+@* Token antiforgery: el JavaScript lo lee y lo envía en un encabezado en cada POST *@
+@Html.AntiForgeryToken()
+
+<section id="votacion" class="vote-shell"
+         data-url-verificar="@Url.Action("Verificar", "Home")"
+         data-url-partidos="@Url.Action("ObtenerPartidos", "Home")"
+         data-url-votar="@Url.Action("Votar", "Home")">
+
+    @* ---------- Paso 1: cédula ---------- *@
+    <div id="pasoCedula" class="panel paso">
+        <div class="paso-icono"><i class="bi bi-person-vcard"></i></div>
+        <h1 class="paso-titulo">Ingresa tu cédula</h1>
+        <p class="paso-sub">Usa el número de cédula con el que estás inscrito para votar.</p>
+
+        <form id="formCedula" novalidate>
+            <label for="cedula" class="form-label">Número de cédula</label>
+            <input id="cedula" name="cedula" type="text" inputmode="numeric" maxlength="15"
+                   class="form-control cedula-input" placeholder="Ej. 1-0234-0567" autocomplete="off" />
+            <p id="cedulaError" class="field-error d-none"></p>
+            <button type="submit" class="btn-app btn-block">Continuar</button>
+        </form>
+    </div>
+
+    @* ---------- Paso 2: elegir partido ---------- *@
+    <div id="pasoPartido" class="panel paso d-none">
+        <p class="saludo">Hola, <strong id="nombreVotante"></strong></p>
+        <h1 class="paso-titulo">Elige tu partido</h1>
+        <p class="paso-sub">Selecciona una opción y confirma. Solo puedes votar una vez.</p>
+
+        <div id="listaPartidos" class="lista-partidos" role="radiogroup" aria-label="Partidos políticos"></div>
+
+        <div class="paso-acciones">
+            <button type="button" id="btnCancelar" class="btn-ghost">Cancelar</button>
+            <button type="button" id="btnVotar" class="btn-app">Emitir voto</button>
+        </div>
+    </div>
+
+    @* ---------- Paso 3: voto registrado ---------- *@
+    <div id="pasoFinal" class="panel paso d-none text-center">
+        <div class="paso-icono paso-icono-ok"><i class="bi bi-check-lg"></i></div>
+        <h1 class="paso-titulo">¡Gracias por votar!</h1>
+        <p class="paso-sub">Tu voto por <strong id="partidoElegido"></strong> fue registrado correctamente.</p>
+
+        <div class="paso-acciones paso-acciones-centro">
+            <a class="btn-ghost" asp-controller="Resultados" asp-action="Index">Ver resultados</a>
+            <button type="button" id="btnNuevo" class="btn-app">Nuevo votante</button>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/votacion.js" asp-append-version="true"></script>
+}

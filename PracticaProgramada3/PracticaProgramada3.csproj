@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\PracticaProgramada3.Domain\PracticaProgramada3.Domain.csproj" />
+		<ProjectReference Include="..\PracticaProgramada3.Application\PracticaProgramada3.Application.csproj" />
+		<ProjectReference Include="..\PracticaProgramada3.Infrastructure\PracticaProgramada3.Infrastructure.csproj" />
+	</ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

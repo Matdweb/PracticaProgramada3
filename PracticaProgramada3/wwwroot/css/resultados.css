@@ -1,0 +1,41 @@
+/* Pantalla de resultados */
+.results-shell { max-width: 720px; margin: 0 auto; }
+
+.results-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.results-total-label { color: var(--muted); font-size: .9rem; }
+.results-total-valor { font-size: 1.8rem; font-weight: 700; letter-spacing: -.02em; }
+
+.results-list { display: grid; gap: 1.1rem; }
+
+.result-info { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .4rem; }
+
+.result-nombre { font-weight: 600; }
+
+.result-votos { display: inline-flex; align-items: baseline; gap: .5rem; white-space: nowrap; }
+
+.result-porcentaje { color: var(--muted); font-size: .85rem; }
+
+.result-barra { height: 10px; border-radius: 999px; background: #efefeb; overflow: hidden; }
+
+.result-barra-relleno {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--line-strong);
+    transition: width .4s ease;
+}
+
+/* El partido con más votos se destaca con el color de acento */
+.result-row.lider .result-barra-relleno { background: var(--accent); }
+.result-row.lider .result-nombre { color: var(--accent); }
+
+.results-empty { margin: 0; color: var(--muted); text-align: center; }
+
+.results-updated { margin: .75rem 0 0; color: var(--muted); font-size: .8rem; text-align: right; }

@@ -1,0 +1,48 @@
+@{
+    var controlador = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string Activo(string nombre) => string.Equals(controlador, nombre, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Votación Nacional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    @* site.css va después de Bootstrap para poder sobrescribir sus estilos *@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header class="app-nav">
+        <div class="app-nav-inner">
+            <a class="brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <span class="brand-mark"><i class="bi bi-check2-square"></i></span>
+                <span>Votación<span class="brand-accent">Nacional</span></span>
+            </a>
+            <nav class="nav-links" aria-label="Principal">
+                <a class="nav-link-app @Activo("Home")" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-box-seam"></i> <span>Votar</span></a>
+                <a class="nav-link-app @Activo("Resultados")" asp-area="" asp-controller="Resultados" asp-action="Index"><i class="bi bi-bar-chart"></i> <span>Resultados</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <main role="main" class="app-main">
+        @RenderBody()
+    </main>
+
+    <footer class="app-footer">
+        &copy; 2026 Sistema de Votación Nacional
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/app.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

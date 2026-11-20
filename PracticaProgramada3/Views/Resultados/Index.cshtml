@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Resultados";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/resultados.css" asp-append-version="true" />
+}
+
+<section id="resultados" class="results-shell" data-url-obtener="@Url.Action("Obtener", "Resultados")">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title">Resultados</h1>
+            <p class="page-sub">Cantidad de votos por partido político.</p>
+        </div>
+        <button type="button" id="btnActualizar" class="btn-ghost"><i class="bi bi-arrow-clockwise"></i> Actualizar</button>
+    </div>
+
+    <div class="panel">
+        <div class="results-total">
+            <span class="results-total-label">Votos emitidos</span>
+            <span id="totalVotos" class="results-total-valor">0</span>
+        </div>
+
+        <div id="alertaResultados" class="alert alert-danger d-none" role="alert"></div>
+        <div id="listaResultados" class="results-list"></div>
+        <p id="sinResultados" class="results-empty d-none">Todavía no hay partidos registrados.</p>
+    </div>
+
+    <p id="ultimaActualizacion" class="results-updated"></p>
+</section>
+
+@section Scripts {
+    <script src="~/js/resultados.js" asp-append-version="true"></script>
+}
