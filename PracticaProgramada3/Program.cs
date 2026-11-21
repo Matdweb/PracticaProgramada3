@@ -1,33 +1,38 @@
-using Microsoft.EntityFrameworkCore;
-using PracticaProgramada3.Application.Interfaces;
-using PracticaProgramada3.Application.Mapping;
-using PracticaProgramada3.Application.Services;
-using PracticaProgramada3.Infrastructure.Data;
-using PracticaProgramada3.Infrastructure.Repositories;
+// Program.cs del proyecto MVC (PracticaProgramada3) cuando la API es un proyecto APARTE (opción A).
+// El MVC no usa base de datos: solo consume la API con HttpClient.
+using PracticaProgramada3.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Controladores de la API (VotacionController y PartidosController)
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 
-// Base de datos: la cadena de conexión "DefaultConnection" está en appsettings.json
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Cliente HTTP tipado: cada vez que se pide IVotacionApiClient, llega con el HttpClient ya configurado.
+// La dirección de la API se lee de appsettings.json (ApiSettings:BaseUrl).
+builder.Services.AddHttpClient<IVotacionApiClient, VotacionApiClient>(client =>
+{
+    var urlBase = builder.Configuration["ApiSettings:BaseUrl"]
+        ?? throw new InvalidOperationException("Falta ApiSettings:BaseUrl en appsettings.json.");
 
-// AutoMapper: convierte entidades en DTOs usando el perfil MapeoClases
-builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapeoClases>());
-
-// Inyección de dependencias: cada interfaz se asocia con su implementación
-builder.Services.AddScoped<IVotanteRepository, VotanteRepository>();
-builder.Services.AddScoped<IPartidoRepository, PartidoRepository>();
-builder.Services.AddScoped<IVotoRepository, VotoRepository>();
-builder.Services.AddScoped<IPartidoServicio, PartidoServicio>();
-builder.Services.AddScoped<IVotacionServicio, VotacionServicio>();
+    client.BaseAddress = new Uri(urlBase);
+    client.Timeout = TimeSpan.FromSeconds(15);
+});
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
 
-app.MapControllers();
+app.UseHttpsRedirection();
+app.UseRouting();
+
+app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
 
 app.Run();

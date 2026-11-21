@@ -43,7 +43,7 @@
         verificar() {
             const cedula = this.$cedula.val().trim();
 
-            if (!/^[\d\s-]{9,15}$/.test(cedula)) {
+            if (cedula.replace(/\D/g, '').length !== 9) {
                 this.mostrarError('Ingresa una cédula válida (9 dígitos).');
                 return;
             }

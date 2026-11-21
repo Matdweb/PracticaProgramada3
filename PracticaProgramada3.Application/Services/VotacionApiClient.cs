@@ -67,6 +67,65 @@ public class VotacionApiClient : IVotacionApiClient
         }, cancellationToken);
     }
 
+    public Task<Respuesta<List<VotanteDto>>> ObtenerVotantesAsync(CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.GetAsync("api/votantes", cancellationToken);
+            if (!respuestaHttp.IsSuccessStatusCode)
+            {
+                return CrearError<List<VotanteDto>>(500, "No se pudieron cargar los votantes.");
+            }
+
+            var votantes = await respuestaHttp.Content.ReadFromJsonAsync<List<VotanteDto>>(OpcionesJson, cancellationToken);
+            return new Respuesta<List<VotanteDto>> { Dato = votantes ?? new List<VotanteDto>() };
+        }, cancellationToken);
+    }
+
+    public Task<Respuesta<VotanteDto>> ObtenerVotantePorIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.GetAsync($"api/votantes/{id}", cancellationToken);
+            if (!respuestaHttp.IsSuccessStatusCode)
+            {
+                return await LeerRespuestaAsync<VotanteDto>(respuestaHttp, cancellationToken);
+            }
+
+            var votante = await respuestaHttp.Content.ReadFromJsonAsync<VotanteDto>(OpcionesJson, cancellationToken);
+            return votante is null
+                ? CrearError<VotanteDto>(404, "El votante no existe.")
+                : new Respuesta<VotanteDto> { Dato = votante };
+        }, cancellationToken);
+    }
+
+    public Task<Respuesta<VotanteDto>> CrearVotanteAsync(VotanteDto votante, CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.PostAsJsonAsync("api/votantes", votante, OpcionesJson, cancellationToken);
+            return await LeerRespuestaAsync<VotanteDto>(respuestaHttp, cancellationToken);
+        }, cancellationToken);
+    }
+
+    public Task<Respuesta<VotanteDto>> ActualizarVotanteAsync(VotanteDto votante, CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.PostAsJsonAsync("api/votantes/actualizar", votante, OpcionesJson, cancellationToken);
+            return await LeerRespuestaAsync<VotanteDto>(respuestaHttp, cancellationToken);
+        }, cancellationToken);
+    }
+
+    public Task<Respuesta<VotanteDto>> EliminarVotanteAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.DeleteAsync($"api/votantes/{id}", cancellationToken);
+            return await LeerRespuestaAsync<VotanteDto>(respuestaHttp, cancellationToken);
+        }, cancellationToken);
+    }
+
     /// <summary>
     /// Ejecuta una llamada a la API y, si no hay conexión o se agota el tiempo, devuelve una Respuesta de error (503)
     /// en lugar de dejar que la excepción llegue a la pantalla.

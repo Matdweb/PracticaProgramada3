@@ -3,7 +3,6 @@ using PracticaProgramada3.Services;
 
 namespace PracticaProgramada3.Controllers;
 
-/// <summary>Pantalla que muestra los partidos y la cantidad de votos de cada uno.</summary>
 public class ResultadosController : Controller
 {
     private readonly IVotacionApiClient _votacionApiClient;

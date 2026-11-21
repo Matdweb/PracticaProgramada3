@@ -19,4 +19,10 @@ public interface IVotacionApiClient
 
     /// <summary>Llama a GET api/votacion/resultados.</summary>
     Task<Respuesta<List<ResultadoPartidoDto>>> ObtenerResultadosAsync(CancellationToken cancellationToken = default);
+
+    Task<Respuesta<List<VotanteDto>>> ObtenerVotantesAsync(CancellationToken cancellationToken = default);
+    Task<Respuesta<VotanteDto>> ObtenerVotantePorIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<Respuesta<VotanteDto>> CrearVotanteAsync(VotanteDto votante, CancellationToken cancellationToken = default);
+    Task<Respuesta<VotanteDto>> ActualizarVotanteAsync(VotanteDto votante, CancellationToken cancellationToken = default);
+    Task<Respuesta<VotanteDto>> EliminarVotanteAsync(int id, CancellationToken cancellationToken = default);
 }

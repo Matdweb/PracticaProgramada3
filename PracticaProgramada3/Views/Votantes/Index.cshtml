@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = "Votantes";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/votantes.css" asp-append-version="true" />
+}
+
+@Html.AntiForgeryToken()
+
+<section id="votantes"
+         data-url-obtener="@Url.Action("ObtenerVotantes", "Votantes")"
+         data-url-por-id="@Url.Action("ObtenerVotantePorId", "Votantes")"
+         data-url-crear="@Url.Action("CrearVotante", "Votantes")"
+         data-url-actualizar="@Url.Action("ActualizarVotante", "Votantes")"
+         data-url-eliminar="@Url.Action("EliminarVotante", "Votantes")"
+         class="people-shell">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title">Votantes</h1>
+            <p class="page-sub">Administración del padrón electoral.</p>
+        </div>
+        <button type="button" id="btnNuevoVotante" class="btn-app">
+            <i class="bi bi-person-plus"></i> Nuevo votante
+        </button>
+    </div>
+
+    <div class="people-layout">
+        <div class="panel people-table-panel">
+            <div id="alertaVotantes" class="alert alert-danger d-none" role="alert"></div>
+            <div class="table-responsive">
+                <table class="people-table">
+                    <thead>
+                        <tr>
+                            <th>Cédula</th>
+                            <th>Nombre completo</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaVotantes"></tbody>
+                </table>
+            </div>
+            <p id="sinVotantes" class="people-empty d-none">No hay votantes registrados.</p>
+        </div>
+
+        <div id="panelFormulario" class="panel people-form-panel d-none">
+            <div class="form-head">
+                <h2 id="tituloFormulario" class="form-title">Nuevo votante</h2>
+                <button type="button" id="btnCancelarFormulario" class="form-close" aria-label="Cerrar">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <form id="formVotante" novalidate>
+                <input id="votanteId" name="id" type="hidden" value="0" />
+
+                <div class="mb-3">
+                    <label for="votanteCedula" class="form-label">Cédula</label>
+                    <input id="votanteCedula" name="cedula" type="text"
+                           class="form-control" maxlength="9" placeholder="Ej. 102340567" />
+                    <p id="errorCedula" class="field-error d-none"></p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="votanteNombre" class="form-label">Nombre completo</label>
+                    <input id="votanteNombre" name="nombreCompleto" type="text"
+                           class="form-control" maxlength="150" placeholder="Nombre y apellidos" />
+                    <p id="errorNombre" class="field-error d-none"></p>
+                </div>
+
+                <button type="submit" id="btnGuardarVotante" class="btn-app btn-block">Guardar votante</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/votantes.js" asp-append-version="true"></script>
+}
