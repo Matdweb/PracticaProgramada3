@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Partidos";
+}
+
+@section Styles {
+    @* Se reutilizan los estilos de tabla y formulario de la pantalla de Votantes *@
+    <link rel="stylesheet" href="~/css/votantes.css" asp-append-version="true" />
+}
+
+@Html.AntiForgeryToken()
+
+<section id="partidos"
+         data-url-obtener="@Url.Action("ObtenerPartidos", "Partidos")"
+         data-url-por-id="@Url.Action("ObtenerPartidoPorId", "Partidos")"
+         data-url-crear="@Url.Action("CrearPartido", "Partidos")"
+         data-url-actualizar="@Url.Action("ActualizarPartido", "Partidos")"
+         data-url-eliminar="@Url.Action("EliminarPartido", "Partidos")"
+         class="people-shell">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title">Partidos políticos</h1>
+            <p class="page-sub">Administración de los partidos por los que se puede votar.</p>
+        </div>
+        <button type="button" id="btnNuevoPartido" class="btn-app">
+            <i class="bi bi-flag"></i> Nuevo partido
+        </button>
+    </div>
+
+    <div class="people-layout">
+        <div class="panel people-table-panel">
+            <div id="alertaPartidos" class="alert alert-danger d-none" role="alert"></div>
+            <div class="table-responsive">
+                <table class="people-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre del partido</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPartidos"></tbody>
+                </table>
+            </div>
+            <p id="sinPartidos" class="people-empty d-none">No hay partidos registrados.</p>
+        </div>
+
+        <div id="panelFormulario" class="panel people-form-panel d-none">
+            <div class="form-head">
+                <h2 id="tituloFormulario" class="form-title">Nuevo partido</h2>
+                <button type="button" id="btnCancelarFormulario" class="form-close" aria-label="Cerrar">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <form id="formPartido" novalidate>
+                <input id="partidoId" name="id" type="hidden" value="0" />
+
+                <div class="mb-3">
+                    <label for="partidoNombre" class="form-label">Nombre</label>
+                    <input id="partidoNombre" name="nombre" type="text"
+                           class="form-control" maxlength="100" placeholder="Ej. Partido Unidad Nacional" />
+                    <p id="errorNombre" class="field-error d-none"></p>
+                </div>
+
+                <button type="submit" id="btnGuardarPartido" class="btn-app btn-block">Guardar partido</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/partidos.js" asp-append-version="true"></script>
+}

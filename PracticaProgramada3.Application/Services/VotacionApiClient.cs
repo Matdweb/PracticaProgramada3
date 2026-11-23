@@ -126,6 +126,50 @@ public class VotacionApiClient : IVotacionApiClient
         }, cancellationToken);
     }
 
+    public Task<Respuesta<PartidoDto>> ObtenerPartidoPorIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.GetAsync($"api/partidos/{id}", cancellationToken);
+            if (!respuestaHttp.IsSuccessStatusCode)
+            {
+                return await LeerRespuestaAsync<PartidoDto>(respuestaHttp, cancellationToken);
+            }
+
+            var partido = await respuestaHttp.Content.ReadFromJsonAsync<PartidoDto>(OpcionesJson, cancellationToken);
+            return partido is null
+                ? CrearError<PartidoDto>(404, "El partido no existe.")
+                : new Respuesta<PartidoDto> { Dato = partido };
+        }, cancellationToken);
+    }
+
+    public Task<Respuesta<PartidoDto>> CrearPartidoAsync(PartidoDto partido, CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.PostAsJsonAsync("api/partidos", partido, OpcionesJson, cancellationToken);
+            return await LeerRespuestaAsync<PartidoDto>(respuestaHttp, cancellationToken);
+        }, cancellationToken);
+    }
+
+    public Task<Respuesta<PartidoDto>> ActualizarPartidoAsync(PartidoDto partido, CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.PostAsJsonAsync("api/partidos/actualizar", partido, OpcionesJson, cancellationToken);
+            return await LeerRespuestaAsync<PartidoDto>(respuestaHttp, cancellationToken);
+        }, cancellationToken);
+    }
+
+    public Task<Respuesta<PartidoDto>> EliminarPartidoAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return EjecutarAsync(async () =>
+        {
+            using var respuestaHttp = await _httpClient.DeleteAsync($"api/partidos/{id}", cancellationToken);
+            return await LeerRespuestaAsync<PartidoDto>(respuestaHttp, cancellationToken);
+        }, cancellationToken);
+    }
+
     /// <summary>
     /// Ejecuta una llamada a la API y, si no hay conexión o se agota el tiempo, devuelve una Respuesta de error (503)
     /// en lugar de dejar que la excepción llegue a la pantalla.
