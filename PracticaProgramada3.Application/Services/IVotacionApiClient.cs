@@ -25,4 +25,10 @@ public interface IVotacionApiClient
     Task<Respuesta<VotanteDto>> CrearVotanteAsync(VotanteDto votante, CancellationToken cancellationToken = default);
     Task<Respuesta<VotanteDto>> ActualizarVotanteAsync(VotanteDto votante, CancellationToken cancellationToken = default);
     Task<Respuesta<VotanteDto>> EliminarVotanteAsync(int id, CancellationToken cancellationToken = default);
+
+    // CRUD de partidos (la lista completa se obtiene con ObtenerPartidosAsync)
+    Task<Respuesta<PartidoDto>> ObtenerPartidoPorIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<Respuesta<PartidoDto>> CrearPartidoAsync(PartidoDto partido, CancellationToken cancellationToken = default);
+    Task<Respuesta<PartidoDto>> ActualizarPartidoAsync(PartidoDto partido, CancellationToken cancellationToken = default);
+    Task<Respuesta<PartidoDto>> EliminarPartidoAsync(int id, CancellationToken cancellationToken = default);
 }
